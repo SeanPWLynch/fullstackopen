@@ -1,24 +1,33 @@
 import React, { useState } from 'react'
 
 const App = () => {
-  const [counter, setCounter] = useState(0)
-
+  const [ counter, setCounter ] = useState(0)
 
   const increaseByOne = () => setCounter(counter + 1)
-  
+  const decreaseByOne = () => setCounter(counter - 1)
   const setToZero = () => setCounter(0)
-
 
   return (
     <div>
-      <div>{counter}</div>
-      <button onClick={increaseByOne}>
-        plus
-      </button>
-      <button onClick={setToZero}>
-        zero
-      </button>
+      <Display counter={counter}/>
+      <Button handleClick={increaseByOne} text='Plus'/>
+      <Button handleClick={decreaseByOne} text='Minus'/>
+      <Button handleClick={setToZero} text='Zero'/> 
     </div>
+  )
+}
+
+const Display = (props) => {
+  return (
+    <div>{props.counter}</div>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
   )
 }
 
