@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const App = () => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0)
 
   const increaseByOne = () => setCounter(counter + 1)
   const decreaseByOne = () => setCounter(counter - 1)
@@ -9,26 +9,20 @@ const App = () => {
 
   return (
     <div>
-      <Display counter={counter}/>
-      <Button handleClick={increaseByOne} text='Plus'/>
-      <Button handleClick={decreaseByOne} text='Minus'/>
-      <Button handleClick={setToZero} text='Zero'/> 
+      <Display counter={counter} />
+      <Button handleClick={increaseByOne} text='Plus' />
+      <Button handleClick={decreaseByOne} text='Minus' />
+      <Button handleClick={setToZero} text='Zero' />
     </div>
   )
 }
 
-const Display = (props) => {
-  return (
-    <div>{props.counter}</div>
-  )
-}
+const Display = ({ counter }) => <div>{counter}</div>
 
-const Button = (props) => {
-  return (
-    <button onClick={props.handleClick}>
-      {props.text}
-    </button>
-  )
-}
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>
+    {text}
+  </button>
+)
 
 export default App
