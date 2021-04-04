@@ -1,0 +1,15 @@
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over browser:
+Request Payload
+{"content":"Its always sunny in Philadelphia","date":"2021-04-04T19:47:54.212Z"}
+end note
+note over server:
+Response
+{"message":"note created"}
+end note
+server-->browser: 201 Created
+
+note over browser:
+spa.js redrawNotes function causes re-render
+end note
