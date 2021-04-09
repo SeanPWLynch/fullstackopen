@@ -40,7 +40,6 @@ const App = () => {
     }
   }
 
-
   const handleNameValueChange = (event) => {
     setNewName(event.target.value)
   }
