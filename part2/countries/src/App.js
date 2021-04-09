@@ -10,7 +10,7 @@ const Filter = ({ changeHandler, filter }) => {
   )
 }
 
-const Countries = ({ countryList, countryFilter }) => {
+const Countries = ({ countryList, countryFilter, showHandler }) => {
 
   if (countryList.length > 9) {
     return (
@@ -20,8 +20,14 @@ const Countries = ({ countryList, countryFilter }) => {
   else if (countryList.length > 1 && countryList.length < 8) {
     return (
       <div>
-        {countryList.map(country => <p>{country.name}</p>)}
-      </div>
+        {
+          countryList.map(country =>
+            <div>
+              <p key={country.name}>{country.name} <button value={country.name} onClick={showHandler}>Show</button></p>
+            </div>
+          )
+        }
+      </div >
     )
   }
   else if (countryList.length === 1) {
@@ -74,12 +80,19 @@ const App = () => {
     setCountryFilter(event.target.value)
   }
 
+  const handleShowCountryButton = (event) => {
+    console.log(event)
+    setCountryFilter(event.target.value)
+  }
+
   const countriesToShow = countryFilter === '' ? countries : countries.filter(country => country.name.toUpperCase().includes(countryFilter.toUpperCase()))
 
   return (
     <div>
       <Filter changeHandler={handleCountryNameFilter} value={countryFilter} />
-      <Countries countryList={countriesToShow} countryFilter={countryFilter} />
+      <Countries countryList={countriesToShow}
+        countryFilter={countryFilter}
+        showHandler={handleShowCountryButton} />
     </div>
   )
 }
