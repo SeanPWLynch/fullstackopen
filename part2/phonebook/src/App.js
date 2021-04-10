@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components//Persons'
 import axios from 'axios'
+const baseUrl = 'http://localhost:3001/persons'
 
 
 const App = () => {
@@ -28,10 +29,9 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    console.log(newPerson)
-    console.log(persons.some(person => person.name === newPerson.name))
     if (!persons.some(person => person.name === newPerson.name)) {
-      setPersons(persons.concat(newPerson))
+      const request = axios.post(baseUrl, newPerson)
+      request.then(response => setPersons(persons.concat(response.data)))
       setNewName('')
       setNewNumber('')
     }
