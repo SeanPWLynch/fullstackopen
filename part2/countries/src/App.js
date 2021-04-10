@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
+const Weather = ({ country, city }) => {
+
+
+
+}
+
 const Filter = ({ changeHandler, filter }) => {
 
   return (
@@ -70,11 +76,28 @@ const App = () => {
       })
   }
 
-  useEffect(getCountries, [])
+  const getWeather = ({ country }) => {
 
+    const params = {
+      access_key: process.env.WEATHERSTACK_API_KEY,
+      query: country.name + ", " + country.capital
+    }
+
+    axios.get('https://api.weatherstack.com/current', { params })
+      .then(response => {
+        const apiResponse = response.data
+        setWeather(response.data)
+        console.log(`Current temperature in ${apiResponse.location.name} is ${apiResponse.current.temperature}℃`)
+      }).catch(error => {
+        console.log(error)
+      });
+  }
+
+  useEffect(getCountries, [])
 
   const [countries, setCountries] = useState([])
   const [countryFilter, setCountryFilter] = useState('')
+  const [weather, setWeather] = useState()
 
   const handleCountryNameFilter = (event) => {
     setCountryFilter(event.target.value)
@@ -83,6 +106,8 @@ const App = () => {
   const handleShowCountryButton = (event) => {
     console.log(event)
     setCountryFilter(event.target.value)
+    console.log(countriesToShow[0])
+    getWeather(countriesToShow[0])
   }
 
   const countriesToShow = countryFilter === '' ? countries : countries.filter(country => country.name.toUpperCase().includes(countryFilter.toUpperCase()))
