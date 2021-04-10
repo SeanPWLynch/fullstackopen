@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const Weather = ({ country, city }) => {
+const Weather = ({ weather }) => {
 
+  if (weather) {
+    return (
+      <div>
+        <p>Temperature: {weather.current.temperature}</p>
+        <img src={weather.current.weather_icons[0]} width="250px"></img>
+        <p>Wind: {weather.current.wind_speed}km/h {weather.current.wind_dir}</p>
 
+      </div>
+    )
+  }
+  else {
+    return (
+      <div>
+        Getting Weather Data...
+      </div>
+    )
+  }
 
 }
 
@@ -16,7 +32,7 @@ const Filter = ({ changeHandler, filter }) => {
   )
 }
 
-const Countries = ({ countryList, countryFilter, showHandler }) => {
+const Countries = ({ countryList, countryFilter, showHandler, weather }) => {
 
   if (countryList.length > 9) {
     return (
@@ -39,7 +55,8 @@ const Countries = ({ countryList, countryFilter, showHandler }) => {
   else if (countryList.length === 1) {
     return (
       <div>
-        <Country country={countryList[0]} />
+        <Country country={countryList[0]}
+          weather={weather} />
       </div>
     )
   }
@@ -50,7 +67,7 @@ const Countries = ({ countryList, countryFilter, showHandler }) => {
   }
 }
 
-const Country = ({ country }) => {
+const Country = ({ country, weather }) => {
   return (
     <div>
       <h2>{country.name}</h2>
@@ -60,6 +77,8 @@ const Country = ({ country }) => {
       <ul>{country.languages.map(language => <li key={language.name}>{language.name}</li>)}</ul>
       <h3>Flag</h3>
       <img src={country.flag} width="250px" alt="Country Flag"></img>
+      <h3>Weather in {country.capital}</h3>
+      <Weather weather={weather} />
     </div>
   )
 
@@ -76,14 +95,16 @@ const App = () => {
       })
   }
 
-  const getWeather = ({ country }) => {
+  const getWeather = () => {
 
     const params = {
-      access_key: process.env.WEATHERSTACK_API_KEY,
-      query: country.name + ", " + country.capital
+      access_key: process.env.REACT_APP_WEATHERSTACK_API_KEY,
+      query: countriesToShow[0].name + ", " + countriesToShow[0].capital
     }
 
-    axios.get('https://api.weatherstack.com/current', { params })
+    console.log(params)
+
+    axios.get('http://api.weatherstack.com/current', { params })
       .then(response => {
         const apiResponse = response.data
         setWeather(response.data)
@@ -106,8 +127,7 @@ const App = () => {
   const handleShowCountryButton = (event) => {
     console.log(event)
     setCountryFilter(event.target.value)
-    console.log(countriesToShow[0])
-    getWeather(countriesToShow[0])
+    getWeather()
   }
 
   const countriesToShow = countryFilter === '' ? countries : countries.filter(country => country.name.toUpperCase().includes(countryFilter.toUpperCase()))
@@ -115,9 +135,11 @@ const App = () => {
   return (
     <div>
       <Filter changeHandler={handleCountryNameFilter} value={countryFilter} />
-      <Countries countryList={countriesToShow}
+      <Countries
+        countryList={countriesToShow}
         countryFilter={countryFilter}
-        showHandler={handleShowCountryButton} />
+        showHandler={handleShowCountryButton}
+        weather={weather} />
     </div>
   )
 }
