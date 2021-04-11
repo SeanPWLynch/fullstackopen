@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components//Persons'
 import personService from './services/personService'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('Enter Name Here...')
   const [newNumber, setNewNumber] = useState('Enter Number Here...')
   const [nameFilter, setNameFilter] = useState('')
+  const [statusMessage, setStatusMessage] = useState(null)
 
   const getPersons = () => {
     personService.getAll()
@@ -25,7 +27,16 @@ const App = () => {
       number: newNumber
     }
     if (!persons.some(person => person.name === newPerson.name)) {
-      personService.create(newPerson).then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+      personService.create(newPerson).then(returnedPerson => {
+        setStatusMessage({
+          type: 'success',
+          text: `Added ${newPerson.name}`
+        })
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+        setPersons(persons.concat(returnedPerson))
+      })
       setNewName('')
       setNewNumber('')
     }
@@ -36,16 +47,21 @@ const App = () => {
     }
   }
 
-  const updateNumber = (person, newNumber) => {
+  const updateNumber = (person, newPerson) => {
     const id = person.id
-    console.log(newNumber)
-    console.log('Updating ', person.name, " with new number: ", newNumber)
-    personService.update(id, newNumber).then(returnedNumber => {
+    console.log(newPerson)
+    console.log('Updating ', person.name, " with new number: ", newPerson)
+    personService.update(id, newPerson).then(returnedNumber => {
       setPersons(persons.map(person => person.id !== id ? person : returnedNumber))
     })
-    .catch(error => {
-      alert("Error updating number")
-    })
+      .catch(error => {
+        setStatusMessage({ type: 'error', text: `Information of ${newPerson.name} has already been removed from server` })
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+        const newPersonArray = persons.filter(person => person.id !== id)
+        setPersons(newPersonArray)
+      })
   }
 
   const handleNameValueChange = (event) => {
@@ -66,6 +82,13 @@ const App = () => {
       personService.remove(event.target.value).then(deletedPerson => {
         const newPersonArray = persons.filter(person => person.id !== parseInt(event.target.value))
         setPersons(newPersonArray)
+      }).catch(error => {
+        setStatusMessage({ type: 'error', text: `Information of ${toDelete.name} has already been removed from server` })
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+        const newPersonArray = persons.filter(person => person.id !== parseInt(event.target.value))
+        setPersons(newPersonArray)
       })
     }
   }
@@ -77,7 +100,7 @@ const App = () => {
     <div>
 
       <h2>Phonebook</h2>
-
+      <Notification message={statusMessage} />
       <Filter changeHandler={handleNameFilterChange} filter={nameFilter} />
 
       <h3>Add New</h3>
