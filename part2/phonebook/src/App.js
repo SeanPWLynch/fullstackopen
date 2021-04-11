@@ -44,6 +44,18 @@ const App = () => {
     setNameFilter(event.target.value)
   }
 
+  const handleDeleteName = (event) => {
+    console.log(event.target.value)
+    const toDelete = persons.find(person => person.id === parseInt(event.target.value))
+    if (window.confirm(`Delete ${toDelete.name}?`)) {
+      console.log("Deleting: ", event.target.value)
+      personService.remove(event.target.value).then(deletedPerson => {
+        const newPersonArray = persons.filter(person => person.id !== parseInt(event.target.value))
+        setPersons(newPersonArray)
+      })
+    }
+  }
+
   const personsToShow = setNameFilter === '' ? persons : persons.filter(person => person.name.toUpperCase().includes(nameFilter.toUpperCase()))
 
 
@@ -66,7 +78,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons personList={personsToShow} />
+      <Persons personList={personsToShow} deleteHandler={handleDeleteName} />
 
     </div>
   )
