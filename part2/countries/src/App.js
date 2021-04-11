@@ -24,7 +24,7 @@ const Weather = ({ country }) => {
       });
   }
 
-  useEffect(getWeather, [])
+  useEffect(getWeather, [country.name, country.capital])
 
   if (weather) {
     return (
