@@ -77,25 +77,24 @@ const App = () => {
 
   const handleDeleteName = (event) => {
     console.log(event.target.value)
-    const toDelete = persons.find(person => person.id === parseInt(event.target.value))
+    const toDelete = persons.find(person => person.id === event.target.value)
     if (window.confirm(`Delete ${toDelete.name}?`)) {
       console.log("Deleting: ", event.target.value)
       personService.remove(event.target.value).then(deletedPerson => {
-        const newPersonArray = persons.filter(person => person.id !== parseInt(event.target.value))
+        const newPersonArray = persons.filter(person => person.id !== event.target.value)
         setPersons(newPersonArray)
       }).catch(error => {
         setStatusMessage({ type: 'error', text: `Information of ${toDelete.name} has already been removed from server` })
         setTimeout(() => {
           setStatusMessage(null)
         }, 5000)
-        const newPersonArray = persons.filter(person => person.id !== parseInt(event.target.value))
+        const newPersonArray = persons.filter(person => person.id !== event.target.value)
         setPersons(newPersonArray)
       })
     }
   }
 
   const personsToShow = setNameFilter === '' ? persons : persons.filter(person => person.name.toUpperCase().includes(nameFilter.toUpperCase()))
-
 
   return (
     <div>
