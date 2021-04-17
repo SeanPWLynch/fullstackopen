@@ -5,7 +5,6 @@ const baseUrl = '/api/persons'
 
 const getAll = () => {
   const request = axios.get(baseUrl)
-
   return request.then(response => response.data)
 }
 
@@ -19,11 +18,16 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
+const searchName = (name) => {
+  const request = axios.get(`${baseUrl}/search/person/${name}`)
+  return request.then(response => response.data)
+}
+
 const remove = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`)
   return request.then(response => response.data)
 }
 
 export default {
-  getAll, create, update, remove
+  getAll, create, update, remove, searchName
 }

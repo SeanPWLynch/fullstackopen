@@ -26,6 +26,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+    
     if (!persons.some(person => person.name === newPerson.name)) {
       personService.create(newPerson).then(returnedPerson => {
         setStatusMessage({
