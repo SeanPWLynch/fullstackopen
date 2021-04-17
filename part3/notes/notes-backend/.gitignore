@@ -1,3 +1,4 @@
 #Ignore non excercise folders
 node_modules/
 .env
+build/
