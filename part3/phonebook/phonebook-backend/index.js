@@ -66,7 +66,10 @@ app.put("/api/persons/:id", (request, response, next) => {
     number: body.number,
   };
 
-  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+  Person.findByIdAndUpdate(request.params.id, person, {
+    new: true,
+    runValidators: true,
+  })
     .then((updatedPerson) => {
       response.json(updatedPerson);
     })
@@ -81,11 +84,12 @@ app.post("/api/persons", (request, response, next) => {
     number: body.number,
   });
 
-  person.save().then((savedPerson) => {
-    response.json(savedPerson);
-  })
-  .catch(error=>next(error));
-  
+  person
+    .save()
+    .then((savedPerson) => {
+      response.json(savedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 app.delete("/api/persons/:id", (request, response) => {
