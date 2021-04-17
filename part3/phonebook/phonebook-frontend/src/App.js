@@ -20,6 +20,7 @@ const App = () => {
 
   useEffect(getPersons, []);
 
+  //
   const addName = (event) => {
     event.preventDefault();
     const newPerson = {
@@ -39,18 +40,19 @@ const App = () => {
             setStatusMessage(null);
           }, 5000);
           setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewNumber("");
         })
         .catch((error) => {
+          console.log(error);
           setStatusMessage({
             type: "error",
-            text: `Information of ${newPerson.name} has already been removed from server`,
+            text: error.response.data.error,
           });
           setTimeout(() => {
             setStatusMessage(null);
           }, 5000);
         });
-      setNewName("");
-      setNewNumber("");
     } else {
       if (
         window.confirm(
@@ -66,26 +68,24 @@ const App = () => {
   };
 
   const updateNumber = (person, newPerson) => {
-    const id = person.id;
-    console.log(newPerson);
     console.log("Updating ", person.name, " with new number: ", newPerson);
     personService
-      .update(id, newPerson)
+      .update(person.id, newPerson)
       .then((returnedNumber) => {
         setPersons(
-          persons.map((person) => (person.id !== id ? person : returnedNumber))
+          persons.map((person) =>
+            person.id !== returnedNumber.id ? person : returnedNumber
+          )
         );
       })
       .catch((error) => {
         setStatusMessage({
           type: "error",
-          text: `Information of ${newPerson.name} has already been removed from server`,
+          text: error.response.data.error,
         });
         setTimeout(() => {
           setStatusMessage(null);
         }, 5000);
-        const newPersonArray = persons.filter((person) => person.id !== id);
-        setPersons(newPersonArray);
       });
   };
 
@@ -106,7 +106,7 @@ const App = () => {
       console.log("Deleting: ", event.target.value);
       personService
         .remove(event.target.value)
-        .then((deletedPerson) => {
+        .then(() => {
           const newPersonArray = persons.filter(
             (person) => person.id !== event.target.value
           );
@@ -115,7 +115,7 @@ const App = () => {
         .catch((error) => {
           setStatusMessage({
             type: "error",
-            text: `Information of ${toDelete.name} has already been removed from server`,
+            text: error.response.data.error,
           });
           setTimeout(() => {
             setStatusMessage(null);

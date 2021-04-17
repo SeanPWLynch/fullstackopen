@@ -12,15 +12,12 @@ app.use(cors());
 app.use(express.static("build"));
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-
   if (error.name === "CastError") {
-    return response.status(400).send({ error: "malformatted id" });
+    return response.status(400).json({ error: "malformed id" });
   }
   if (error.name === "ValidationError") {
-    return response.status(422).send({ error: error.message });
+    return response.status(422).json({ error: error.message });
   }
-
   next(error);
 };
 
@@ -69,11 +66,14 @@ app.put("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndUpdate(request.params.id, person, {
     new: true,
     runValidators: true,
+    context: "query",
   })
     .then((updatedPerson) => {
       response.json(updatedPerson);
     })
-    .catch((error) => next(error));
+    .catch((error) => {
+      next(error);
+    });
 });
 
 app.post("/api/persons", (request, response, next) => {
