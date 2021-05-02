@@ -116,6 +116,24 @@ describe('Delete Functionality', () => {
     })
 })
 
+describe('Update Functionality', () => {
+    test('Update by ID works', async () => {
+
+        const blog = {
+            title: "Type wars",
+            author: "Robert C. Martin",
+            url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+            likes: 10
+        }
+
+        const updatedBlog = await api.put('/api/blogs/5a422bc61b54a676234d17fc').send(blog).expect(200)
+
+        expect(updatedBlog.body.likes).toBe(10)
+
+    })
+
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
