@@ -97,6 +97,25 @@ test('Fail if title or url missing', async () => {
 
 })
 
+describe('Delete Functionality', () => {
+    test('Delete by ID works', async () => {
+        await api.delete('/api/blogs/5a422bc61b54a676234d17fc').expect(204)
+        const blogsAtEnd = await helper.blogsInDB()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+        const titles = blogsAtEnd.map(blog => blog.title)
+
+        expect(titles).not.toContain("Type wars")
+
+    })
+
+    test('Delete with incorrect ID returns 204 no content', async () => {
+        await api.delete('/api/blogs/5a422bc61b54a676234d17fa').expect(204)
+        const blogsAtEnd = await helper.blogsInDB()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
