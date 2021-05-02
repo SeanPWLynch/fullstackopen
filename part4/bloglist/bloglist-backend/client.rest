@@ -2,9 +2,9 @@ POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "test2",
+    //"title": "test2",
     "author": "Wed, 21 Oct 2015 18:27:50 GMT",
-    "url": "localhost",
+    //"url": "localhost",
     "likes": 10
 }
 

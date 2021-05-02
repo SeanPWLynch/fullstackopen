@@ -36,7 +36,7 @@ test('id property returned name id', async () => {
 
 test('new blog post is saved', async () => {
     const newBlog = {
-        title: "test2",
+        title: "new blog test",
         author: "Wed, 21 Oct 2015 18:27:50 GMT",
         url: "localhost",
         likes: 10
@@ -53,8 +53,48 @@ test('new blog post is saved', async () => {
 
     const title = blogsAtEnd.map(b => b.title)
     expect(title).toContain(
-        'test2'
+        'new blog test'
     )
+})
+
+test('likes default to zero if missing', async () => {
+    const newBlog = {
+        title: "new blog test, likes missing",
+        author: "Wed, 21 Oct 2015 18:27:50 GMT",
+        url: "localhost"
+    }
+
+    const request = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+    expect(request.body.likes).toBeDefined()
+    expect(request.body.likes).toBe(0)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+})
+
+test('Fail if title or url missing', async () => {
+    const newBlog = {
+        //title: "new blog test, likes missing",
+        author: "Fri, 30 Apr 2021 18:27:50 GMT",
+        //url: "localhost"
+        likes: 0
+    }
+
+    const request = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
 })
 
 afterAll(() => {

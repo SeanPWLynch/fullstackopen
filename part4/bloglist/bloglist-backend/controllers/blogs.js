@@ -16,11 +16,16 @@ blogsRouter.get('/:id', async (request, response) => {
     }
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
     const blog = new Blog(request.body)
-
     const savedBlog = await blog.save();
-    response.json(savedBlog);
+
+    if (savedBlog) {
+        response.json(savedBlog)
+    }
+    else {
+        response.status(400).end()
+    }
 
 })
 
