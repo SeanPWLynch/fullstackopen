@@ -51,6 +51,24 @@ const initialBlogs = [
     }
 ]
 
+const initialUsers =
+    [
+        {
+            _id: "551122",
+            username: "root",
+            name: "root",
+            password: "password",
+            __v: 0
+        },
+        {
+            _id: "551123",
+            username: "sean",
+            name: "sean",
+            password: "password",
+            __v: 0
+        }
+    ]
+
 const nonExistingId = async () => {
     const blog = new blog({ content: 'willremovethissoon', date: new Date() })
     await blog.save()
