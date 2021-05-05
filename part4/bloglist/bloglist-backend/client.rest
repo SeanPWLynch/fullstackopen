@@ -59,10 +59,10 @@ content-type: application/json
 
 POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOTI5MWNmNWE5ZWEzMDIwYTFiZTc0NiIsImlhdCI6MTYyMDIzODM0NH0.sCJ3PXALniThJdNXxigyWZiBet8SkTkQRkMwLu8_5F0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOTI5MWNmNWE5ZWEzMDIwYTFiZTc0NiIsImlhdCI6MTYyMDIzOTI4Nn0.cPgt44IMD6lK18TI8lktqWQfKC8nZYxpCv4vNuOfwlQ
 
 {
-    "title": "test5",
+    "title": "test6",
     "author": "Wed, 21 Oct 2015 18:27:50 GMT",
     "url": "localhost",
     "likes": 10
