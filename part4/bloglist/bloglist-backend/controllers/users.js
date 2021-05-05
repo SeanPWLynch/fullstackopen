@@ -4,15 +4,15 @@ const User = require('../models/user')
 
 usersRouter.get('/', async (request, response, next) => {
   const users = await User
-    .find({}).populate('blogs')
+    .find({}).populate('blogs',{title: 1, author: 1, url: 1, id: 1})
   response.json(users)
 })
 
 usersRouter.post('/', async (request, response, next) => {
   const body = request.body
 
-  if(body.password.length < 3){
-        return response.status(400).json({ error: "User Validation failed: password: Path `password` (`s`) is shorter than the minimum allowed length (3)." })
+  if (body.password.length < 3) {
+    return response.status(400).json({ error: "User Validation failed: password: Path `password` (`s`) is shorter than the minimum allowed length (3)." })
   }
 
   const saltRounds = 10

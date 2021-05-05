@@ -38,6 +38,7 @@ const initialBlogs = [
         title: "TDD harms architecture",
         author: "Robert C. Martin",
         url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+        user: 551123,
         likes: 0,
         __v: 0
     },
@@ -47,6 +48,7 @@ const initialBlogs = [
         author: "Robert C. Martin",
         url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
         likes: 2,
+        user: 551123,
         __v: 0
     }
 ]
@@ -65,6 +67,7 @@ const initialUsers =
             username: "sean",
             name: "sean",
             password: "password",
+            blogs: ["5a422bc61b54a676234d17fc", "5a422ba71b54a676234d17fb"],
             __v: 0
         }
     ]

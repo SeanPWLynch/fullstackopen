@@ -5,6 +5,7 @@ content-type: application/json
     "title": "test2",
     "author": "Wed, 21 Oct 2015 18:27:50 GMT",
     "url": "localhost",
+    "userId":"609291cf5a9ea3020a1be746",
     "likes": 10
 }
 
