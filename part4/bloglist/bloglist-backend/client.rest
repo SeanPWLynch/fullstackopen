@@ -57,11 +57,13 @@ content-type: application/json
 
 ###
 
-POST http://localhost:3001/api/notes HTTP/1.1
+POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOGZlNTk4MjljNjBiMmE2ZDAyYjAwZCIsImlhdCI6MTYyMDA0MzkxMX0.Y6MbOdqe3Fmvs09Nv90h-k5tajt7hy-beIdrlJyLGoc
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOTI5MWNmNWE5ZWEzMDIwYTFiZTc0NiIsImlhdCI6MTYyMDIzODM0NH0.sCJ3PXALniThJdNXxigyWZiBet8SkTkQRkMwLu8_5F0
 
 {
-    "content": "API Auth Test",
-    "important": true
+    "title": "test5",
+    "author": "Wed, 21 Oct 2015 18:27:50 GMT",
+    "url": "localhost",
+    "likes": 10
 }
