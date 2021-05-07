@@ -17,7 +17,7 @@ content-type: application/json
 
     "username": "sean",
     "name": "sean",
-    "password": "psssa"
+    "password": "password"
         
 }
 
@@ -52,7 +52,7 @@ content-type: application/json
 
 {
     "username": "sean",
-    "password": "psssa"
+    "password": "password"
 }
 
 ###

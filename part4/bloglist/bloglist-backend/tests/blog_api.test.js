@@ -4,14 +4,23 @@ const helper = require('../utils/test_helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
 
-    const blogObjects = helper.initialBlogs
+    const users = helper.initialUsers
+        .map(user => new User(user))
+
+    const blogs = helper.initialBlogs
         .map(blog => new Blog(blog))
-    const promiseArray = blogObjects.map(blog => blog.save())
-    await Promise.all(promiseArray)
+
+    const blogPromiseArray = blogs.map(blog => blog.save())
+    const userPromiseArray = users.map(user => user.save())
+
+    await Promise.all(userPromiseArray)
+    await Promise.all(blogPromiseArray)
 })
 
 test('blogs are returned as json', async () => {
@@ -35,15 +44,25 @@ test('id property returned name id', async () => {
 })
 
 test('new blog post is saved', async () => {
+
+    const auth = await api.post('/api/login').send({
+        username: "sean",
+        password: "password"
+    }).expect(200).expect('Content-Type', /application\/json/)
+
+
+    console.log(auth.body.token);
+
     const newBlog = {
         title: "new blog test",
         author: "Wed, 21 Oct 2015 18:27:50 GMT",
         url: "localhost",
-        likes: 10
+        likes: 10,
     }
 
     await api
         .post('/api/blogs')
+        .auth(auth.token, { type: 'bearer' })
         .send(newBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/)
