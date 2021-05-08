@@ -10,8 +10,7 @@ beforeEach(async () => {
     await Blog.deleteMany({})
     await User.deleteMany({})
 
-    const users = helper.initialUsers
-        .map(user => new User(user))
+    const users = helper.initialUsers.map(user => new User(user));
 
     const blogs = helper.initialBlogs
         .map(blog => new Blog(blog))
@@ -45,13 +44,10 @@ test('id property returned name id', async () => {
 
 test('new blog post is saved', async () => {
 
-    const auth = await api.post('/api/login').send({
-        username: "sean",
-        password: "password"
-    }).expect(200).expect('Content-Type', /application\/json/)
 
 
-    console.log(auth.body.token);
+    const auth = await api.post('/api/login').send({ username: 'sean', password: 'password' })
+
 
     const newBlog = {
         title: "new blog test",
@@ -62,7 +58,7 @@ test('new blog post is saved', async () => {
 
     await api
         .post('/api/blogs')
-        .auth(auth.token, { type: 'bearer' })
+        .auth(auth.body.token, { type: 'bearer' })
         .send(newBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/)
@@ -77,6 +73,10 @@ test('new blog post is saved', async () => {
 })
 
 test('likes default to zero if missing', async () => {
+
+    const auth = await api.post('/api/login').send({ username: 'sean', password: 'password' })
+
+
     const newBlog = {
         title: "new blog test, likes missing",
         author: "Wed, 21 Oct 2015 18:27:50 GMT",
@@ -85,6 +85,7 @@ test('likes default to zero if missing', async () => {
 
     const request = await api
         .post('/api/blogs')
+        .auth(auth.body.token, { type: 'bearer' })
         .send(newBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/)
@@ -98,6 +99,9 @@ test('likes default to zero if missing', async () => {
 })
 
 test('Fail if title or url missing', async () => {
+
+    const auth = await api.post('/api/login').send({ username: 'sean', password: 'password' })
+
     const newBlog = {
         //title: "new blog test, likes missing",
         author: "Fri, 30 Apr 2021 18:27:50 GMT",
@@ -107,6 +111,7 @@ test('Fail if title or url missing', async () => {
 
     const request = await api
         .post('/api/blogs')
+        .auth(auth.body.token, { type: 'bearer' })
         .send(newBlog)
         .expect(400)
         .expect('Content-Type', /application\/json/)
@@ -118,7 +123,13 @@ test('Fail if title or url missing', async () => {
 
 describe('Delete Functionality', () => {
     test('Delete by ID works', async () => {
-        await api.delete('/api/blogs/5a422bc61b54a676234d17fc').expect(204)
+        const auth = await api.post('/api/login')
+            .send({ username: 'sean', password: 'password' })
+
+        await api.delete('/api/blogs/5a422bc61b54a676234d17fc')
+            .auth(auth.body.token, { type: 'bearer' })
+            .expect(204)
+
         const blogsAtEnd = await helper.blogsInDB()
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
@@ -129,7 +140,13 @@ describe('Delete Functionality', () => {
     })
 
     test('Delete with incorrect ID returns 204 no content', async () => {
-        await api.delete('/api/blogs/5a422bc61b54a676234d17fa').expect(204)
+
+        const auth = await api.post('/api/login').send({ username: 'sean', password: 'password' })
+
+        await api.delete('/api/blogs/5a422bc61b54a676234d17fa')
+            .auth(auth.body.token, { type: 'bearer' })
+            .expect(204)
+
         const blogsAtEnd = await helper.blogsInDB()
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     })
@@ -138,6 +155,9 @@ describe('Delete Functionality', () => {
 describe('Update Functionality', () => {
     test('Update by ID works', async () => {
 
+        const auth = await api.post('/api/login').send({ username: 'sean', password: 'password' })
+
+
         const blog = {
             title: "Type wars",
             author: "Robert C. Martin",
@@ -145,7 +165,10 @@ describe('Update Functionality', () => {
             likes: 10
         }
 
-        const updatedBlog = await api.put('/api/blogs/5a422bc61b54a676234d17fc').send(blog).expect(200)
+        const updatedBlog = await api.put('/api/blogs/5a422bc61b54a676234d17fc')
+            .auth(auth.body.token, { type: 'bearer' })
+            .send(blog)
+            .expect(200)
 
         expect(updatedBlog.body.likes).toBe(10)
 

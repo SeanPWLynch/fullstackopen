@@ -79,14 +79,17 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
     const blog = await Blog.findById(request.params.id)
 
-    console.log(request.user, blog.user);
-
-    if (blog.user.toString() === request.user._id.toString()) {
-        await Blog.findByIdAndRemove(request.params.id)
-        response.status(204).end()
+    if (!blog) {
+        response.status(204).end("Blog with id: ", request.params.id, " does not exist")
     }
     else {
-        response.status(403).json({ error: 'blogs can only be removed by user who created them' })
+        if (blog.user.toString() === request.user._id.toString()) {
+            await Blog.findByIdAndRemove(request.params.id)
+            response.status(204).end()
+        }
+        else {
+            response.status(403).json({ error: 'blogs can only be removed by user who created them' })
+        }
     }
 })
 
