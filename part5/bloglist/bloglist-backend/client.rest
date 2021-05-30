@@ -1,0 +1,82 @@
+POST http://localhost:3001/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test2",
+    "author": "Wed, 21 Oct 2015 18:27:50 GMT",
+    "url": "localhost",
+    "userId":"609291cf5a9ea3020a1be746",
+    "likes": 10
+}
+
+###
+POST http://localhost:3001/api/users HTTP/1.1
+content-type: application/json
+
+{
+
+    "username": "sean",
+    "name": "sean",
+    "password": "password"
+        
+}
+
+###
+GET http://localhost:3001/api/users HTTP/1.1
+content-type: application/json
+
+###
+
+PUT http://localhost:3001/api/blogs/608e9202a31dcc12cc3096d8 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test2",
+    "author": "Wed, 21 Oct 2015 18:27:50 GMT",
+    "url": "localhost",
+    "likes": 13
+}
+
+###
+
+GET http://localhost:3001/api/blogs HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/blogs/6092e5331fff560eb3a1b4fc HTTP/1.1
+
+
+###
+POST http://localhost:3001/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "sean",
+    "password": "password"
+}
+
+###
+
+POST http://localhost:3001/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOTI5MWNmNWE5ZWEzMDIwYTFiZTc0NiIsImlhdCI6MTYyMDI0Njc2MX0.iOz31mrfgXs7Js8tC9BaAOFc0p7uSoNJUhZ6JqU7HHw
+
+{
+    "title": "test10",
+    "author": "Wed, 21 Oct 2015 18:27:50 GMT",
+    "url": "localhost",
+    "likes": 10
+}
+
+###
+
+DELETE http://localhost:3001/api/blogs/609303b7324dbf1f6c6aec99 HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOTI5MWNmNWE5ZWEzMDIwYTFiZTc0NiIsImlhdCI6MTYyMDIzOTI4Nn0.cPgt44IMD6lK18TI8lktqWQfKC8nZYxpCv4vNuOfwlQ
+
+{
+    "title": "test6",
+    "author": "Wed, 21 Oct 2015 18:27:50 GMT",
+    "url": "localhost",
+    "likes": 10
+}

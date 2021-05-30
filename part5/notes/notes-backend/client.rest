@@ -1,0 +1,39 @@
+
+POST http://localhost:3001/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "notes": [],
+    "username": "sean",
+    "name": "sean",
+    "password": "password01"
+
+}
+
+###
+POST http://localhost:3001/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "sean",
+    "password": "password01"
+}
+
+###
+
+POST http://localhost:3001/api/notes HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlYW4iLCJpZCI6IjYwOGZlNTk4MjljNjBiMmE2ZDAyYjAwZCIsImlhdCI6MTYyMDA0MzkxMX0.Y6MbOdqe3Fmvs09Nv90h-k5tajt7hy-beIdrlJyLGoc
+
+{
+    "content": "API Auth Test",
+    "important": true
+}
+
+###
+
+GET http://localhost:3001/api/blogs HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/blogs/608e9202a31dcc12cc3096d8 HTTP/1.1
